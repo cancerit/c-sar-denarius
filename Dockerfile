@@ -44,7 +44,6 @@ COPY c_sar_denarius/ c_sar_denarius/
 COPY README.md setup.py ./
 # project has no tests
 RUN python3.9 ./setup.py install \
-# make sure permissions are correct
 && find $OPT -type d -exec chmod o+rx {} \; \
 && find $OPT -type f -exec chmod o+r {} \;
 
