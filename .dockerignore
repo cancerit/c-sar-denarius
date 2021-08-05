@@ -1,0 +1,9 @@
+/LICENSE
+/CHANGES.md
+/.gitignore
+/.git
+/.circleci
+/env
+/dist
+/venv
+__pycache__

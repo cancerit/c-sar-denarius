@@ -1,0 +1,137 @@
+# Single Guide CRISPr viewer (interim solution)
+
+See left doc tree for available datasets.
+
+<!--
+Be careful, if you update the indent needs to be corrected to 4 spaces
+-->
+
+- [Requesting analysis](#requesting-analysis)
+    - [Non standard analysis](#non-standard-analysis)
+- [Template manifest](#template-manifest)
+- [Manifest header items](#manifest-header-items)
+    - [`dataset-name`](#dataset-name)
+    - [`config-set`](#config-set)
+    - [`guide-library-id`](#guide-library-id)
+    - [`*_genes`](#_genes)
+- [Manifest sample grid](#manifest-sample-grid)
+    - [`group_by`](#group_by)
+    - [`canapps_project`](#canapps_project)
+    - [`supplier_name`](#supplier_name)
+    - [`plasmid`/`control`/`treatment`](#plasmidcontroltreatment)
+- [Glossary of terms](#glossary-of-terms)
+
+## Requesting analysis
+
+Please complete a manifest and email to <cgphelp@sanger.ac.uk> including the following information:
+
+- Deployment instance:
+    - adams
+    - garnett
+    - public
+- Analysis method:
+    - `qc-only`
+    - `qc`
+    - `analysis`
+
+Manifest download link and details are included below.
+
+### Non standard analysis
+
+This application can be used by any user in the CASM group.  If you wish to perform non standard or "throwaway" analysis
+please run this in your own space.  Documentation for this use case can be found on [here][conf-personal].
+
+## Template manifest
+
+- [Template manifest download](./manifest.xlsx)
+
+Information about fields are listed below, please read these before attempting to complete the manifest or submitting.
+
+## Manifest header items
+
+### `dataset-name`
+
+A name to identify your dataset, automatically prefixed with run-date in format `YYYYMMDD`.
+
+### `config-set`
+
+Used to indicate which configuration should be applied. Valid values include:
+
+| Intended for | Value                        | Use                                                 | Deprecated |
+|--------------|------------------------------|-----------------------------------------------------|------------|
+| team113/DA   | `da_v1`                      | Adams lab, Standard processing                      | N          |
+| team113/DA   | `da_noCcR_v1`                | Adams lab, CRISPRcleanR disabled                    | N          |
+| team113/DA   | `da_noDepletion_v1`          | Adams lab, BAGEL2 disabled                           | N          |
+| team215/MG   | `mg_CRISPRcleanR_v1`         | Garnett lab, Standard processing                    | N          |
+| team215/MG   | `mg_CRISPRcleanR_debug_v1`   | Garnett lab, Expanded output                        | N          |
+| team215/MG   | `mg_noCRISPRcleanR_v1`       | Garnett lab, CRISPRcleanR disabled                  | N          |
+| team215/MG   | `mg_noCRISPRcleanR_debug_v1` | Garnett lab, Expanded output, CRISPRcleanR disabled | N          |
+
+These are tied to the `c-sar` execution configuration.  New configurations can be created on request.
+
+### `guide-library-id`
+
+Obtain via [CanApps Project Viewer](https://canapps.sanger.ac.uk/action/Cancer_Pipeline_ProjectViewer).
+The `ID` element of the `GUIDE_LIBRARY` field is required
+
+### `*_genes`
+
+`essential_genes` and `nonessential_genes` are used by BAGEL2.  Valid values are:
+
+| Species | essential_genes                           | nonessential_genes                        |
+|---------|-------------------------------------------|-------------------------------------------|
+| Human   | [`human/BAGEL2_CEGv2.txt`][bagel2-ceg-v2] | [`human/BAGEL2_NEGv1.txt`][bagel2-neg-v1] |
+| Mouse   | `mouse/essential_genes.txt`               | `mouse/non_essential_genes.txt`           |
+
+Alternate files can be used provided they are added to the appropriate location, contact cgphelp@sanger.ac.uk if necessary.
+
+## Manifest sample grid
+
+If you are unable to find the plasmid sample in a canapps project you will need to liase with cgphelp@sanger.ac.uk (in a dedicated ticket) providing all names that the plasmid may have been sequenced under.  We are not able to support externally generated data at this time.
+
+### `group_by`
+
+This field is used to group samples as multiple treatment groups can be defined in a single submission.
+
+If you wish to use a plasmid the row must have a `group_by` value of `plasmid` and have the `plasmid` column set to 1.
+**Only one** plasmid row is allowed in each manifest.
+
+All rows with the same `group_by` value must share the same [`plasmid`/`control`/`treatment`](#plasmid-control-treatment) column values.
+
+### `canapps_project`
+
+This must be the canapps project containing the merged counts data, see note [above](#manifest-sample-grid) about plasmid data.
+
+### `supplier_name`
+
+The sample name used within canapps (generally matches supplier name in sequencescape).
+
+### `plasmid`/`control`/`treatment`
+
+A manifest can contain sample sets of the following combinations:
+
+- plasmid, control
+- plasmid, treatment (multiple groups)
+- control, treatment (multiple groups)
+- plasmid, control, treatment (multiple groups)
+
+All must be 0 or 1.
+
+A plasmid row is not required but when it is provided:
+
+- only one can exist
+- it must be paired with a `group_by` value of `plasmid`.
+
+Only one *group* of samples can be tagged as `control = 1` (see [`group_by`](#group_by)).
+
+## Glossary of terms
+
+A glossary of terms can be found [here](https://docs.google.com/document/d/1OIyezB1q5LnYSuwX53EGBEKDssYuviSLEw1iBhX1j9s){target=\_blank}.
+
+This requires login in with a Sanger GSuite account.
+
+<!-- refs -->
+
+[bagel2-ceg-v2]: https://github.com/hart-lab/bagel/blob/5aea1eb84a8eea66f5feeb6286442fd535b98bff/CEGv2.txt
+[bagel2-neg-v1]: https://github.com/hart-lab/bagel/blob/5aea1eb84a8eea66f5feeb6286442fd535b98bff/NEGv1.txt
+[conf-personal]: https://confluence.sanger.ac.uk/display/CAS/SGCRISPR+interim#personal-use

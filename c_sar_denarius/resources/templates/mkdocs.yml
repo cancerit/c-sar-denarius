@@ -1,0 +1,5 @@
+site_name: SG CRISPr viewer
+theme:
+  name: material
+markdown_extensions:
+  - attr_list
