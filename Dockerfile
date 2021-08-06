@@ -42,11 +42,11 @@ RUN python3.9 -m venv $VIRTUAL_ENV
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
 COPY c_sar_denarius/ c_sar_denarius/
-COPY README.md setup.py requirements-test.txt ./
+COPY README.md setup.py ./
 COPY tests/ tests/
 COPY .coveragerc .
 # hadolint ignore=DL3013
-RUN pip install --no-cache-dir -r requirements-test.txt \
+RUN pip install --no-cache-dir -r tests/requirements-test.txt \
 && python3.9 ./setup.py develop \
 && pip install --no-cache-dir sauth@git+git://github.com/elfgoh/sauth.git@15dbca865332e7b83ccf5d9d227d0321a88132ca \
 && tests/scripts/run_unit_tests.sh
@@ -55,7 +55,7 @@ RUN pip install --no-cache-dir -r requirements-test.txt \
 RUN mkdir -p /var/www/c_sar_denarius && mv htmlcov /var/www/c_sar_denarius/test-coverage && mv junit.xml /var/www/c_sar_denarius/.
 
 # as we use COPY we can cleanup stuff from the testing layers and actually get a smaller image
-RUN pip uninstall -yr requirements-test.txt
+RUN pip uninstall -yr tests/requirements-test.txt
 
 # deploy properly and ensure permissions correct
 RUN python3.9 ./setup.py install \
