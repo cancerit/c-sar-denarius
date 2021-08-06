@@ -4,11 +4,13 @@ import sys
 from functools import wraps
 
 import click
-import pkg_resources  # part of setuptools
 from click_option_group import OptionGroup
 
+import c_sar_denarius.serve as csd_serve
+from c_sar_denarius import markdown as csd_md
 from c_sar_denarius.constants import DEFAULT_GRP
 from c_sar_denarius.constants import DEFAULT_PW
+from c_sar_denarius.utils import version
 
 LOG_LEVELS = ("WARNING", "INFO", "DEBUG")
 HIDE_SSL_OPTIONS = True
@@ -17,7 +19,7 @@ optgroup_debug = OptionGroup("\nDebug options", help="Options specific to troubl
 optgroup_serve = OptionGroup("\nServer options", help="Options specific to serving the website")
 
 
-def _log_setup(loglevel):
+def log_setup(loglevel):
     logging.basicConfig(level=getattr(logging, loglevel.upper()), format="%(levelname)s: %(message)s")
 
 
@@ -124,7 +126,7 @@ def debug_opts(f):
 
 
 @click.group()
-@click.version_option(pkg_resources.require(__name__.split(".")[0])[0].version)
+@click.version_option(version())
 def cli():
     pass
 
@@ -137,17 +139,16 @@ def server(target, authfile, port, loglevel, ssl):
     """
     Serve the result of a pre-existing target area.
     """
-    _log_setup(loglevel)
-    serve.site(target, authfile, port, ssl)
+    log_setup(loglevel)
+    csd_serve.site(target, authfile, port, ssl)
 
 
 @cli.command()
 @input_opts
 @output_opts
 @debug_opts
-def markdown(loglevel):
+def markdown(*args, **kwargs):
     """
     Generate (or extend existing) c-sar-denarius site from a c-sar result folder.
     """
-    _log_setup(loglevel)
-    # main.test_markdown(output, title, config, mode, nf_tsv)
+    csd_md.run(*args, **kwargs)

@@ -4,7 +4,7 @@ omit =
     */cli.py
 
 [report]
-fail_under = 70
+fail_under = 15
 precision = 2
 omit =
     */cli.py

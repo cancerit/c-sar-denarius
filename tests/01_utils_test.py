@@ -13,10 +13,10 @@ DATA_DIR = os.path.join(
 @pytest.mark.parametrize(
     "v_set, exp_err, exp_result",
     [
-        ("good", False, "1.2.0"),
-        ("good-extended", False, "1.2.0a2"),
+        ("good", False, ("1.2.0", "1.2.0")),
+        ("good-extended", False, ("1.2.0a2", "1.2.0")),
         ("bad", True, None),
-        ("absent", False, "current"),
+        ("absent", False, ("?", "1.2.0")),
     ],
 )
 def test_01_versions(v_set, exp_err, exp_result):
