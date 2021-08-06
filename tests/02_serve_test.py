@@ -1,4 +1,5 @@
 import os
+from stat import *
 
 import pytest
 
@@ -8,6 +9,17 @@ DATA_DIR = os.path.join(
     os.path.dirname(os.path.realpath(__file__)),
     "data/serve_chks",
 )
+
+YAML_PERMS = {
+    "good.yaml": S_IRUSR | S_IRGRP,
+    "missing_pw.yaml": S_IRUSR | S_IRGRP,
+    "missing_group.yaml": S_IRUSR | S_IRGRP,
+    "bad_permissions.yaml": S_IRUSR | S_IRGRP | S_IROTH,
+}
+
+# irritating but set the permissions we expect outside the tests
+for k, v in YAML_PERMS.items():
+    os.chmod(os.path.join(DATA_DIR, k), v)
 
 
 @pytest.mark.parametrize(
