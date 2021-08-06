@@ -9,9 +9,10 @@ import yaml
 from sauth import serve_http
 from sauth import SimpleHTTPAuthHandler
 
+from c_sar_denarius.constants import DEFAULT_GRP
+from c_sar_denarius.constants import DEFAULT_PW
+
 PERMISSIONS_FLAG: int = S_IROTH | S_IWOTH | S_IXOTH
-DEFAULT_GRP = "cancer"
-DEFAULT_PW = "test"
 
 
 def check_permissions(filename):
@@ -23,7 +24,7 @@ def check_permissions(filename):
 
 def load_auth(filename):
     check_permissions(filename)
-    (user, pw) = (None, None)
+    (group, pw) = (None, None)
     with open(filename, "r") as fo:
         y = yaml.safe_load(fo)
         group = y["group"]
