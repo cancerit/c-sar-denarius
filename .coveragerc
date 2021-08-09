@@ -1,10 +1,10 @@
 [run]
 branch = true
-omit =
-    */cli.py
+# omit =
+#    */cli.py
 
 [report]
-fail_under = 15
+fail_under = 35
 precision = 2
-omit =
-    */cli.py
+# omit =
+#    */cli.py

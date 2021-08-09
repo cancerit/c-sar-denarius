@@ -22,8 +22,11 @@ from c_sar_denarius.md_utils import title_and_ver
 COMP_TYPES = ("control_vs_plasmid", "treatment_vs_plasmid", "treatment_vs_control")
 
 
-def structure_yaml(version: str):
+def structure_yaml(version: str, config_ver: str):
     logging.info(f"c-sar version for structure was '{version}'")
+    if version == "?":
+        logging.info(f"Version detected is invalid, using latest known config'{config_ver}'")
+        version = config_ver
     # load the raw string
     md_template = resource_string(__name__, f"resources/structure/{version}.yaml").decode("utf-8", "strict")
     # deal with the way we have to handle the folders with treatment/plasmid/control
@@ -151,7 +154,7 @@ def build_md(input: str, title: str, target: str, version: str, config_ver: str,
 def run(input: str, name: str, target: str, loglevel: str):
     cli.log_setup(loglevel)
     (version, config_ver) = csd_utils.c_sar_version(input)
-    structure = structure_yaml(version)
+    structure = structure_yaml(version, config_ver)
     md_base = mkdocs_base(target)
     final_build = os.path.join(target, "site")
     post_archive_clean = build_md(input, name, target, version, config_ver, structure)
