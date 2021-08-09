@@ -1,5 +1,8 @@
-site_name: SG CRISPr viewer
+site_name: c-sar-denarius
 theme:
   name: material
+  palette:
+    primary: blue grey
+  logo: denarius.png
 markdown_extensions:
   - attr_list

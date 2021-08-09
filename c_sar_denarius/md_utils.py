@@ -23,6 +23,8 @@ def mkdocs_base(target):
     shutil.copyfile(mkdocs_yml, os.path.join(md_base, "mkdocs.yml"))
     index_md = resource_filename(__name__, "resources/templates/index.md.tmpl")
     shutil.copyfile(index_md, os.path.join(md_base, "docs", "index.md"))
+    index_md = resource_filename(__name__, "resources/images/denarius.png")
+    shutil.copyfile(index_md, os.path.join(md_base, "docs", "denarius.png"))
     return md_base
 
 

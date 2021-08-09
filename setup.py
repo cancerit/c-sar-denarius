@@ -21,8 +21,9 @@ config = {
     "packages": ["c_sar_denarius"],
     "package_data": {
         "c_sar_denarius": [
-            "resources/structure/**/*",
+            "resources/structure/*.yaml",
             "resources/templates/*",
+            "resources/images/*",
         ]
     },
     "entry_points": {
