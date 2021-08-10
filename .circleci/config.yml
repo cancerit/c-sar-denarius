@@ -21,7 +21,7 @@ jobs:
           command: |
             WKDIR=$(pwd)
             echo $WKDIR
-            ls -l $WKDIR
+            ls -la $WKDIR
             docker run -it --rm -v $WKDIR:/github/workspace apache/skywalking-eyes header check
   build_docker:
     environment:
