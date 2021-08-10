@@ -11,8 +11,8 @@
 version: 2.1
 jobs:
   license_chk:
-    # need machine as want to mount a volume
     machine:
+      # need machine as want to mount a volume
       image: ubuntu-2004:202107-02
     steps:
       - checkout
@@ -23,11 +23,11 @@ jobs:
   build_docker:
     environment:
       IMAGE_NAME: quay.io/wtsicgp/c-sar-denarius
-    docker:
-      - image: circleci/buildpack-deps:stretch
+    machine:
+      # need machine as want to copy from
+      image: ubuntu-2004:202107-02
     steps:
       - checkout
-      - setup_remote_docker
       - run:
           name: Build Docker image
           command: |
@@ -40,7 +40,7 @@ jobs:
             docker run -t --rm $IMAGE_NAME:$CLEAN_BRANCH c-sar-denarius --version
 
             mkdir -p test-results/pytest/
-            container_id=`docker run -d --rm $IMAGE_NAME:$CLEAN_BRANCH c-sar-denarius sleep 1000`
+            container_id=$(docker run -d --rm $IMAGE_NAME:$CLEAN_BRANCH c-sar-denarius sleep 1000)
             docker cp $container_id:/var/www/c_sar_denarius/junit.xml  test-results/pytest/junit.xml
             docker rm -f $container_id
 
