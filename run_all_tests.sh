@@ -32,7 +32,13 @@
 ./tests/scripts/run_unit_tests.sh
 exit_unit=$?
 
+exit_skywalkingeyes=0
+if command -v docker &> /dev/null ; then
+    docker run -it --rm -v $(pwd):/github/workspace apache/skywalking-eyes header check
+    exit_skywalkingeyes=$?
+fi
+
 pre-commit run --all-files
 exit_precommit=$?
 
-! (( $exit_unit || $exit_precommit ))
+! (( $exit_unit || $exit_skywalkingeyes || $exit_precommit ))

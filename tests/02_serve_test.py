@@ -79,9 +79,12 @@ def test_01_check_permissions(auth_file, exp_exit, exp_result):
     ],
 )
 def test_02_load_auth(auth_file, exp_err, exp_result):
+    auth_path = os.path.join(DATA_DIR, auth_file)
     if exp_err:
         with pytest.raises(KeyError) as e_info:
-            serve.load_auth(os.path.join(DATA_DIR, auth_file))
+            serve.load_auth(auth_path)
     else:
-        result = serve.load_auth(os.path.join(DATA_DIR, auth_file))
+        result = serve.load_auth(auth_path)
         assert result == exp_result
+    # put permissions back for user
+    os.chmod(auth_path, S_IRUSR | S_IWUSR)
