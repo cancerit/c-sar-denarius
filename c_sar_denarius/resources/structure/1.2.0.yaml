@@ -22,11 +22,11 @@ QC-intermediates-corrected:
     gene_lfc_density.LFC.corrected.%A%_vs_%B%.png:
       image: true
       required: false
-      label: "Gene lfc density - corrected"
+      label: "Gene LCF density - corrected"
     gene_lfc_violin.corrected.%A%_vs_%B%.png:
       image: true
       required: false
-      label: "Gene lfc violin - corrected"
+      label: "Gene LFC violin - corrected"
     sgrna_lfc_density.%S%.corrected.%A%_vs_%B%.png:
       required: false
       wildcard: true
@@ -51,16 +51,16 @@ QC-intermediates-normalised:
     gene_lfc_correlation.normalised.%A%_vs_%B%.png:
       image: true
       required: false
-      label: "Gene lfc correlation - normalised"
+      label: "Gene LFC correlation - normalised"
     gene_lfc_density.%S%.normalised.%A%_vs_%B%.png:
       image: true
       required: false
-      label: "Gene lfc density - normalised"
+      label: "Gene LFC density - normalised"
       wildcard: true
     gene_lfc_violin.normalised.%A%_vs_%B%.png:
       image: true
       required: false
-      label: "Gene lfc violin - normalised"
+      label: "Gene LFC violin - normalised"
     sgrna_lfc_correlation.normalised.%A%_vs_%B%.png:
       required: false
     sgrna_lfc_density.%S%.normalised.%A%_vs_%B%.png:
@@ -85,16 +85,16 @@ QC-intermediates-raw:
     gene_lfc_correlation.raw.%A%_vs_%B%.png:
       image: true
       required: false
-      label: "Gene lfc correlation - raw"
+      label: "Gene LFC correlation - raw"
     gene_lfc_density.%S%.raw.%A%_vs_%B%.png:
       image: true
       required: false
-      label: "Gene lfc density - raw"
+      label: "Gene LFC density - raw"
       wildcard: true
     gene_lfc_violin.raw.%A%_vs_%B%.png:
       image: true
       required: false
-      label: "Gene lfc violin - raw"
+      label: "Gene LFC violin - raw"
     sgrna_lfc_correlation.raw.%A%_vs_%B%.png:
       required: false
     sgrna_lfc_density.%S%.raw.%A%_vs_%B%.png:

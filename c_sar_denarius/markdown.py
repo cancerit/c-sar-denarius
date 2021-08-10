@@ -25,7 +25,7 @@ COMP_TYPES = ("control_vs_plasmid", "treatment_vs_plasmid", "treatment_vs_contro
 def structure_yaml(version: str, config_ver: str):
     logging.info(f"c-sar version for structure was '{version}'")
     if version == "?":
-        logging.info(f"Version detected is invalid, using latest known config'{config_ver}'")
+        logging.info(f"Version detected is invalid, using latest known config '{config_ver}'")
         version = config_ver
     # load the raw string
     md_template = resource_string(__name__, f"resources/structure/{version}.yaml").decode("utf-8", "strict")
@@ -107,12 +107,16 @@ def file_to_md(
 
 def build_md(input: str, title: str, target: str, version: str, config_ver: str, structure: Dict):
     """
-    As we have "unknown" plasmid_vs_control etc we need to build this from the generic form
+    As we have "unknown" plasmid_vs_control etc we need to build this by iterating over things
+
+    Remember this code 'looks for' things based on the config, it won't tell you about things it's skipping.
     """
     archive_clean = []
+    files_seen = []
     comparison_sets = {}
     output = os.path.join(target, "md", "docs")
     seen_comp_label = {}
+
     for label in structure:
         for p_subdir in structure[label]:
             # what can we find
@@ -121,9 +125,11 @@ def build_md(input: str, title: str, target: str, version: str, config_ver: str,
                 subdir = p_subdir.replace("%A%_vs_%B%", comparison_type)
                 for p_item in structure[label][p_subdir]:
                     item = p_item.replace("%A%_vs_%B%", comparison_type)
-                    data_file = Path(os.path.join(input, subdir, item))
+                    data_fn = os.path.join(input, subdir, item)
+                    data_file = Path(data_fn)
                     if not data_file.is_file():
                         continue
+                    files_seen.append(data_fn)
                     (md_element, post_archive) = file_to_md(
                         input, output, subdir, title, item, **structure[label][p_subdir][p_item]
                     )
@@ -133,7 +139,7 @@ def build_md(input: str, title: str, target: str, version: str, config_ver: str,
                             comparison_sets[comparison_type] = title_and_ver(comparison_type, version, config_ver)
 
                         if comp_label not in seen_comp_label:
-                            comparison_sets[comparison_type] += f"\n\n## {label}"
+                            comparison_sets[comparison_type] += f"\n\n----\n\n## {label}"
                             seen_comp_label[comp_label] = None
 
                         comparison_sets[comparison_type] += f"\n\n{md_element}"
@@ -141,6 +147,7 @@ def build_md(input: str, title: str, target: str, version: str, config_ver: str,
     dest = os.path.join(output, title)
     for comparison_type in comparison_sets:
         # just md generation
+        comparison_sets[comparison_type] += "----\n\n"
         comparison_sets[comparison_type] += archive_files_to_md("./files/results.tar.gz")
         # write the full MD files
         md_file = os.path.join(dest, comparison_type + ".md")
@@ -148,16 +155,17 @@ def build_md(input: str, title: str, target: str, version: str, config_ver: str,
             print(comparison_sets[comparison_type], file=ofh)
 
     # need to unique this list due to looping over comparison types
-    return list(set(archive_clean))
+    return list(set(archive_clean)), list(set(files_seen))
 
 
-def run(input: str, name: str, target: str, loglevel: str):
+def run(input: str, name: str, primary_color: str, target: str, loglevel: str):
     cli.log_setup(loglevel)
     (version, config_ver) = csd_utils.c_sar_version(input)
     structure = structure_yaml(version, config_ver)
-    md_base = mkdocs_base(target)
+    md_base = mkdocs_base(target, primary_color)
     final_build = os.path.join(target, "site")
-    post_archive_clean = build_md(input, name, target, version, config_ver, structure)
+    (post_archive_clean, files_seen) = build_md(input, name, target, version, config_ver, structure)
+    csd_utils.files_not_seen(input, files_seen)
     # now build the archive
     result_archive(md_base, post_archive_clean, name)
     mkdocs(md_base, final_build)

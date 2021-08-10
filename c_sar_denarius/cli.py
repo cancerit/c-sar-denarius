@@ -14,6 +14,29 @@ from c_sar_denarius.utils import version
 
 LOG_LEVELS = ("WARNING", "INFO", "DEBUG")
 HIDE_SSL_OPTIONS = True
+MKDOCS_PC = (
+    "red",
+    "pink",
+    "purple",
+    "deep-purple",
+    "indigo",
+    "blue",
+    "light-blue",
+    "cyan",
+    "teal",
+    "green",
+    "light-green",
+    "lime",
+    "yellow",
+    "amber",
+    "orange",
+    "deep-orange",
+    "brown",
+    "grey",
+    "blue-grey",
+    "black",
+    "white",
+)
 
 optgroup_debug = OptionGroup("\nDebug options", help="Options specific to troubleshooting, testing")
 optgroup_serve = OptionGroup("\nServer options", help="Options specific to serving the website")
@@ -47,6 +70,14 @@ def input_opts(f):
         required=True,
         type=str,
         help="Name to apply to results in interface menu.",
+    )
+    @click.option(
+        "-c",
+        "--primary-color",
+        required=True,
+        type=click.Choice(MKDOCS_PC, case_sensitive=False),
+        default="blue-grey",
+        help="Primary color (header/text) in generated website",
     )
     @wraps(f)
     def wrapper(*args, **kwargs):

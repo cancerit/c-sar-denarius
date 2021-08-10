@@ -9,22 +9,30 @@ import tempfile
 from typing import List
 
 from pkg_resources import resource_filename
+from pkg_resources import resource_string
 
 import c_sar_denarius.utils as csd_utils
 
 MKDOCS_BUILD = "cd %(md_base)s && mkdocs build -d %(tmp_target)s && rsync -ar %(tmp_target)s/* %(target)s"
 
 
-def mkdocs_base(target):
+def mkdocs_base(target, primary_color: "blue-grey"):
     logging.info(f"Building site into: {target}")
     md_base = os.path.join(target, "md")
-    os.makedirs(os.path.join(md_base, "docs"), exist_ok=True)
-    mkdocs_yml = resource_filename(__name__, "resources/templates/mkdocs.yml")
-    shutil.copyfile(mkdocs_yml, os.path.join(md_base, "mkdocs.yml"))
+    # lazily creating structure
+    os.makedirs(os.path.join(md_base, "docs", "stylesheets"), exist_ok=True)
+
+    mkdocs_yml = resource_string(__name__, f"resources/templates/mkdocs.yml.tmpl").decode("utf-8", "strict")
+    mkdocs_yml = mkdocs_yml.replace("%primary-colour%", primary_color.replace("-", " "))
+    with open(os.path.join(md_base, "mkdocs.yml"), "wt") as mdy:
+        print(mkdocs_yml, file=mdy)
+
     index_md = resource_filename(__name__, "resources/templates/index.md.tmpl")
     shutil.copyfile(index_md, os.path.join(md_base, "docs", "index.md"))
-    index_md = resource_filename(__name__, "resources/images/denarius.png")
+    index_md = resource_filename(__name__, "resources/other/denarius.png")
     shutil.copyfile(index_md, os.path.join(md_base, "docs", "denarius.png"))
+    index_md = resource_filename(__name__, "resources/other/denarius.css")
+    shutil.copyfile(index_md, os.path.join(md_base, "docs", "stylesheets", "denarius.css"))
     return md_base
 
 
@@ -42,7 +50,7 @@ def file_to_md_table(f_path: str):
 
 
 def archive_files_to_md(archive_path: str):
-    file_list_md = f"## Complete outputs\n\n[Download archive]({archive_path}), this is for the analysis as a whole, not just this sample grouping.\n\n"
+    file_list_md = f"## Complete outputs\n\n[Download archive]({archive_path}), this is for the analysis as a whole, not just this section.\n\n"
     return file_list_md
 
 

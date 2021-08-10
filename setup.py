@@ -23,7 +23,7 @@ config = {
         "c_sar_denarius": [
             "resources/structure/*.yaml",
             "resources/templates/*",
-            "resources/images/*",
+            "resources/other/*",
         ]
     },
     "entry_points": {

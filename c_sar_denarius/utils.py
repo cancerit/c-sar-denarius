@@ -4,6 +4,7 @@ import os
 import subprocess
 import sys
 from pathlib import Path
+from typing import List
 
 from packaging.version import InvalidVersion
 from packaging.version import Version
@@ -23,6 +24,23 @@ def sha256(fname):
         for chunk in iter(lambda: f.read(4096), b""):
             hash_sha256.update(chunk)
     return hash_sha256.hexdigest()
+
+
+def files_not_seen(input: str, file_seen: List[str]):
+    all_files = []
+    for root, dirs, files in os.walk(input):
+        for f in files:
+            all_files.append(os.path.join(root, f))
+
+    missed_files = sorted(list(set(all_files).difference(set(file_seen))))
+    logging.info(f"{len(all_files)} files found in input area,")
+    logging.info(f"{len(file_seen)} files were captured by this configuration.")
+    miss_count = len(missed_files)
+    if miss_count > 0:
+        logging.warning(f"{miss_count} files that were not captured, run with '--loglevel debug' for listing")
+        if logging.getLogger().getEffectiveLevel() == logging.DEBUG:
+            for f in missed_files:
+                logging.debug()
 
 
 def c_sar_version(root: str):
