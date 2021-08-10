@@ -38,12 +38,21 @@ jobs:
             echo "$QUAYIO_PASSWORD" | docker login -u "$QUAYIO_USER" --password-stdin quay.io
             docker build -t $IMAGE_NAME:$CLEAN_BRANCH .
             docker run -t --rm $IMAGE_NAME:$CLEAN_BRANCH c-sar-denarius --version
+
+            mkdir -p test-results/pytest/
+            container_id=`docker run -d --rm $IMAGE_NAME:$CLEAN_BRANCH c-sar-denarius sleep 1000`
+            docker cp $container_id:/var/www/c_sar_denarius/junit.xml  test-results/pytest/junit.xml
+            docker rm -f $container_id
+
             if [ "$CIRCLE_TAG" = "$BRANCH_OR_TAG" ]; then
               echo 'Pushing image'
               docker push $IMAGE_NAME:$CLEAN_BRANCH
             else
               echo "I am not a tag so not pushing image"
             fi
+      - store_test_results:
+          path: test-results
+
   test_pypi_publish:
     docker:
       - image: circleci/python:3.7

@@ -93,6 +93,7 @@ ENV VIRTUAL_ENV=$OPT/venv
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
 COPY --from=builder $OPT $OPT
+COPY --from=builder /var/www/c_sar_denarius /var/www/c_sar_denarius
 
 RUN adduser --disabled-password --gecos '' ubuntu && chsh -s /bin/bash && mkdir -p /home/ubuntu
 USER ubuntu
