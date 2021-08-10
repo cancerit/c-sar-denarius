@@ -26,3 +26,23 @@ pip install git+git://github.com/elfgoh/sauth.git@15dbca865332e7b83ccf5d9d227d03
 # manually run pre-commit checks
 pre-commit run -a
 ```
+
+### Updating licence headers
+
+Please use [skywalking-eyes](https://github.com/apache/skywalking-eyes).
+
+Expected workflow:
+
+1. Check state before modifying `.licenserc.yaml`:
+   - `docker run -it --rm -v $(pwd):/github/workspace apache/skywalking-eyes header check`
+   - You should get some 'valid' here, those without a header as 'invalid'
+1. Modify `.licenserc.yaml`
+1. Apply the changes:
+   - `docker run -it --rm -v $(pwd):/github/workspace apache/skywalking-eyes header fix`
+1. Add/commit changes
+
+This is executed in the CI pipeline.
+
+*DO NOT* edit the header in the files, please modify the date component of `content` in `.licenserc.yaml`.
+
+If you need to make more extensive changes to the license carefully test the pattern is functional.
