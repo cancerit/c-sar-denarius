@@ -13,10 +13,9 @@ jobs:
   license_chk:
     # need machine as want to mount a volume
     machine:
-      - image: ubuntu-2004:202107-02
+      image: ubuntu-2004:202107-02
     steps:
       - checkout
-      - setup_remote_docker
       - run:
           name: Execute skywalking-eyes check of licenses
           command: |
