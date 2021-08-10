@@ -11,20 +11,16 @@
 version: 2.1
 jobs:
   license_chk:
-    docker:
-      - image: circleci/buildpack-deps:stretch
+    # need machine as want to mount a volume
+    machine:
+      - image: ubuntu-2004:202107-02
     steps:
       - checkout
       - setup_remote_docker
       - run:
           name: Execute skywalking-eyes check of licenses
           command: |
-            WKDIR=$(pwd)
-            echo $WKDIR
-            ls -la $WKDIR
-            docker run --rm -v $WKDIR:/github/workspace --entrypoint="" apache/skywalking-eyes ls -la
-
-#docker run --rm -v $WKDIR:/github/workspace apache/skywalking-eyes header check
+            docker run --rm -v $WKDIR:/github/workspace apache/skywalking-eyes header check
   build_docker:
     environment:
       IMAGE_NAME: quay.io/wtsicgp/c-sar-denarius
