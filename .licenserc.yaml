@@ -67,6 +67,7 @@ header:
     - '.gitignore'
     - '.pre-commit-config.yaml'
     - 'CHANGES.md'
+    - 'Dockerfile'
     - 'LICENSE'
     - 'pyproject.toml'
     - 'README.md'
