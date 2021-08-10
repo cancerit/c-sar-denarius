@@ -19,7 +19,10 @@ jobs:
       - run:
           name: Execute skywalking-eyes check of licenses
           command: |
-            docker run -it --rm -v $(pwd):/github/workspace apache/skywalking-eyes header check
+            WKDIR=$(pwd)
+            echo $WKDIR
+            ls -l $$WKDIR
+            docker run -it --rm -v $WKDIR:/github/workspace apache/skywalking-eyes header check
   build_docker:
     environment:
       IMAGE_NAME: quay.io/wtsicgp/c-sar-denarius
