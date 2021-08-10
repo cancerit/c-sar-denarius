@@ -3,8 +3,6 @@ import logging
 import os
 import shutil
 import subprocess
-import sys
-import tarfile
 import tempfile
 from typing import List
 
@@ -49,11 +47,6 @@ def file_to_md_table(f_path: str):
     return qc_table
 
 
-def archive_files_to_md(archive_path: str):
-    file_list_md = f"## Complete outputs\n\n[Download archive]({archive_path}), this is for the analysis as a whole, not just this section.\n\n"
-    return file_list_md
-
-
 def title_and_ver(title, c_sar_version, config_ver):
     md_str = f"# {title}\n\n"
     md_str = f"## Versions\n\n"
@@ -62,24 +55,6 @@ def title_and_ver(title, c_sar_version, config_ver):
     md_str += f"* {config_ver} : c-sar-denarious config\n"
     # no trailing new lines
     return md_str
-
-
-def result_archive(output: str, archive_clean: List[str], title: str):
-    files_path = os.path.join(output, "docs", title, "files")
-    minimise_result_data(files_path, archive_clean)
-
-    tar_dest = os.path.join(files_path, "results.tar.gz")
-    logging.info(f"Building archive: {tar_dest}")
-    with tempfile.TemporaryDirectory(prefix=__name__) as tmpdir:
-        tmp_tar = os.path.join(tmpdir, "results.tar.gz")
-        # dereference=False to allow symlinks
-        with tarfile.open(name=tmp_tar, mode="w:gz", dereference=False) as tar:
-            tar.add(files_path, arcname=".")
-        shutil.move(tmp_tar, tar_dest)
-
-    # remove files only needed in archive
-    for f in archive_clean:
-        os.remove(f)
 
 
 def mkdocs(md_base, final_build):
@@ -100,39 +75,3 @@ def mkdocs(md_base, final_build):
         r = subprocess.run(full_command, shell=True, capture_output=True, text=True)
         if r.returncode != 0:
             csd_utils.process_log_and_exit(r, "Problem while building mkdocs site")
-
-
-def minimise_result_data(files_path: str, archive_clean: List[str]):
-    logging.info(f"Minimizing data files under: {files_path}")
-    # need to be careful of links depending on this
-    chksums = {}
-    # symlinks need to have a base of in the 'files' subdir
-    for dirpath, dirnames, filenames in os.walk(files_path):
-        for name in filenames:
-            item = os.path.join(dirpath, name)
-            digest = csd_utils.sha256(item)
-            if digest not in chksums:
-                chksums[digest] = []
-            chksums[digest].append(item)
-
-    to_clean_set = set(archive_clean)
-
-    for digest, files in chksums.items():
-        if len(files) == 1:
-            continue
-        # Need to make sure that we only use files that aren't about to be deleted as the "real" file
-        safe_files = set(files).difference(to_clean_set)
-        real = None
-        if len(safe_files) == 0:
-            # If all files are to deleted after archive is built we can use any
-            real = files[0]
-        else:
-            # to be consistent sort this
-            real = sorted(safe_files)[0]
-        real = real.replace(files_path + "/", "")
-
-        for f in files[1:]:
-            rel_dirs = f.replace(files_path + "/", "").count("/")
-            link_path = os.path.join("../" * rel_dirs, real)
-            os.unlink(f)
-            os.symlink(link_path, f)

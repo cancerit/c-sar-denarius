@@ -12,11 +12,9 @@ from pkg_resources import resource_string
 
 from c_sar_denarius import cli
 from c_sar_denarius import utils as csd_utils
-from c_sar_denarius.md_utils import archive_files_to_md
 from c_sar_denarius.md_utils import file_to_md_table
 from c_sar_denarius.md_utils import mkdocs
 from c_sar_denarius.md_utils import mkdocs_base
-from c_sar_denarius.md_utils import result_archive
 from c_sar_denarius.md_utils import title_and_ver
 
 COMP_TYPES = ("control_vs_plasmid", "treatment_vs_plasmid", "treatment_vs_control")
@@ -48,7 +46,6 @@ def file_to_md(
     description=None,
 ) -> Tuple[str, List[str]]:
     items = []
-    post_archive_rm = []
     full_md = None
     if label is None:
         label = item
@@ -94,7 +91,6 @@ def file_to_md(
         os.makedirs(os.path.dirname(destination), exist_ok=True)
         shutil.copyfile(source, destination)
         if not download and not image:
-            post_archive_rm.append(destination)
             # no rendering for these
             continue
 
@@ -102,7 +98,7 @@ def file_to_md(
             full_md += f"[Download](./{relative})\n\n"
         if image:
             full_md += f"![{item}](./{relative})\n\n"
-    return (full_md, post_archive_rm)
+    return full_md
 
 
 def build_md(input: str, title: str, target: str, version: str, config_ver: str, structure: Dict):
@@ -111,7 +107,6 @@ def build_md(input: str, title: str, target: str, version: str, config_ver: str,
 
     Remember this code 'looks for' things based on the config, it won't tell you about things it's skipping.
     """
-    archive_clean = []
     files_seen = []
     comparison_sets = {}
     output = os.path.join(target, "md", "docs")
@@ -130,10 +125,7 @@ def build_md(input: str, title: str, target: str, version: str, config_ver: str,
                     if not data_file.is_file():
                         continue
                     files_seen.append(data_fn)
-                    (md_element, post_archive) = file_to_md(
-                        input, output, subdir, title, item, **structure[label][p_subdir][p_item]
-                    )
-                    archive_clean += post_archive
+                    md_element = file_to_md(input, output, subdir, title, item, **structure[label][p_subdir][p_item])
                     if md_element:
                         if comparison_type not in comparison_sets:
                             comparison_sets[comparison_type] = title_and_ver(comparison_type, version, config_ver)
@@ -146,16 +138,13 @@ def build_md(input: str, title: str, target: str, version: str, config_ver: str,
 
     dest = os.path.join(output, title)
     for comparison_type in comparison_sets:
-        # just md generation
-        comparison_sets[comparison_type] += "----\n\n"
-        comparison_sets[comparison_type] += archive_files_to_md("./files/results.tar.gz")
         # write the full MD files
         md_file = os.path.join(dest, comparison_type + ".md")
         with open(md_file, "w") as ofh:
             print(comparison_sets[comparison_type], file=ofh)
 
     # need to unique this list due to looping over comparison types
-    return list(set(archive_clean)), list(set(files_seen))
+    return list(set(files_seen))
 
 
 def run(input: str, name: str, primary_color: str, target: str, loglevel: str):
@@ -164,8 +153,6 @@ def run(input: str, name: str, primary_color: str, target: str, loglevel: str):
     structure = structure_yaml(version, config_ver)
     md_base = mkdocs_base(target, primary_color)
     final_build = os.path.join(target, "site")
-    (post_archive_clean, files_seen) = build_md(input, name, target, version, config_ver, structure)
+    files_seen = build_md(input, name, target, version, config_ver, structure)
     csd_utils.files_not_seen(input, files_seen)
-    # now build the archive
-    result_archive(md_base, post_archive_clean, name)
     mkdocs(md_base, final_build)
