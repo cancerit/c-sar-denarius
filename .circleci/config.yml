@@ -40,7 +40,7 @@ jobs:
             docker run -t --rm $IMAGE_NAME:$CLEAN_BRANCH c-sar-denarius --version
 
             mkdir -p test-results/pytest/
-            container_id=$(docker run -d --rm $IMAGE_NAME:$CLEAN_BRANCH c-sar-denarius sleep 1000)
+            container_id=$(docker run -d --rm $IMAGE_NAME:$CLEAN_BRANCH sleep 1000)
             docker cp $container_id:/var/www/c_sar_denarius/junit.xml test-results/pytest/junit.xml
             docker cp $container_id:/var/www/c_sar_denarius/test-coverage/ htmlcov/
             docker rm -f $container_id
