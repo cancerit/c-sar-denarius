@@ -1,5 +1,5 @@
 # CHANGES
 
-## NEXT
+## 0.1.0
 
-- New
+- Fist public release, anticipate early configuration updates
