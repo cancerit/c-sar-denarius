@@ -97,7 +97,6 @@ workflows:
           requires:
             - license_chk
             - build_docker
-            - test_pypi_publish
           context:
             - pypi-twine-uploads
           filters:
