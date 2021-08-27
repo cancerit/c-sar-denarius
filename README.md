@@ -125,7 +125,7 @@ If you need to make more extensive changes to the license carefully test the pat
 ## LICENSE
 
 ```
-Copyright (c) 2021
+Copyright (c) 2021 Genome Research Ltd
 
 Author: CASM/Cancer IT <cgphelp@sanger.ac.uk>
 
