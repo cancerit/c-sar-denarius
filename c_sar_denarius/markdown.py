@@ -58,7 +58,6 @@ def structure_yaml(version: str, config_ver: str, yamlfile: str):
     if yamlfile is None:
         # load the raw string
         md_template = resource_string(__name__, f"resources/structure/{version}.yaml").decode("utf-8", "strict")
-        # deal with the way we have to handle the folders with treatment/plasmid/control
         yaml_obj = yaml.safe_load(md_template)
     else:
         with open(yamlfile, "r") as yaml_stream:
