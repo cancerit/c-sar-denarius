@@ -40,4 +40,4 @@ import c_sar_denarius.markdown as csdmd
     ],
 )
 def test_01_versions(version, config_ver):
-    assert isinstance(csdmd.structure_yaml(version, config_ver), dict)
+    assert isinstance(csdmd.structure_yaml(version, config_ver, None), dict)

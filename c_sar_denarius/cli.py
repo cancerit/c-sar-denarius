@@ -85,6 +85,16 @@ def _dir_exists():
     )
 
 
+def _file_exists():
+    return click.Path(
+        exists=True,
+        file_okay=True,
+        dir_okay=False,
+        readable=True,
+        resolve_path=True,
+    )
+
+
 def input_opts(f):
     @click.option(
         "-i",
@@ -107,6 +117,13 @@ def input_opts(f):
         type=click.Choice(MKDOCS_PC, case_sensitive=False),
         default="blue-grey",
         help="Primary color (header/text) in generated website",
+    )
+    @click.option(
+        "-y",
+        "--yamlfile",
+        required=False,
+        type=_file_exists(),
+        help="Override default yaml configuration.",
     )
     @wraps(f)
     def wrapper(*args, **kwargs):

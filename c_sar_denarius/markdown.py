@@ -49,15 +49,21 @@ from c_sar_denarius.md_utils import title_and_ver
 COMP_TYPES = ("control_vs_plasmid", "treatment_vs_plasmid", "treatment_vs_control")
 
 
-def structure_yaml(version: str, config_ver: str):
+def structure_yaml(version: str, config_ver: str, yamlfile: str):
     logging.info(f"c-sar version for structure was '{version}'")
     if version == "?":
         logging.info(f"Version detected is invalid, using latest known config '{config_ver}'")
         version = config_ver
-    # load the raw string
-    md_template = resource_string(__name__, f"resources/structure/{version}.yaml").decode("utf-8", "strict")
-    # deal with the way we have to handle the folders with treatment/plasmid/control
-    return yaml.safe_load(md_template)
+    yaml_obj = None
+    if yamlfile is None:
+        # load the raw string
+        md_template = resource_string(__name__, f"resources/structure/{version}.yaml").decode("utf-8", "strict")
+        # deal with the way we have to handle the folders with treatment/plasmid/control
+        yaml_obj = yaml.safe_load(md_template)
+    else:
+        with open(yamlfile, "r") as yaml_stream:
+            yaml_obj = yaml.safe_load(yaml_stream)
+    return yaml_obj
 
 
 def file_to_md(
@@ -176,10 +182,10 @@ def build_md(input: str, title: str, target: str, version: str, config_ver: str,
     return list(set(files_seen))
 
 
-def run(input: str, name: str, primary_color: str, target: str, loglevel: str):
+def run(input: str, name: str, primary_color: str, yamlfile: str, target: str, loglevel: str):
     cli.log_setup(loglevel)
     (version, config_ver) = csd_utils.c_sar_version(input)
-    structure = structure_yaml(version, config_ver)
+    structure = structure_yaml(version, config_ver, yamlfile)
     md_base = mkdocs_base(target, primary_color)
     final_build = os.path.join(target, "site")
     files_seen = build_md(input, name, target, version, config_ver, structure)
