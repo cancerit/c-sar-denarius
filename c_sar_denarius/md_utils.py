@@ -79,8 +79,8 @@ def file_to_md_table(f_path: str):
 def title_and_ver(title, c_sar_version, config_ver):
     md_str = f"# {title}\n\n"
     md_str = f"## Versions\n\n"
-    md_str += f"* {c_sar_version} : c-sar ('?' indicates unable to detect)\n"
-    md_str += f"* {csd_utils.version()} : c-sar-denarious\n"
+    md_str += f"* {c_sar_version} : c-sar\n"
+    md_str += f"* {csd_utils.version()} : c-sar-denarius\n"
     md_str += f"* {config_ver} : c-sar-denarious config\n"
     # no trailing new lines
     return md_str
