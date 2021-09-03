@@ -72,15 +72,20 @@ def files_not_seen(input: str, file_seen: List[str]):
                 logging.debug()
 
 
-def c_sar_version(root: str):
-    """
-    Get and parse c-sar version file from expected location
-    """
+def template_versions():
     v_list = []
     for f in resource_listdir(__name__, "resources/structure"):
         (name, ext) = os.path.splitext(f)
         if ext == ".yaml":
             v_list.append(Version(name))  # only expect valid PEP440
+    return v_list
+
+
+def c_sar_version(root: str):
+    """
+    Get and parse c-sar version file from expected location
+    """
+    v_list = template_versions()
 
     ver_file = Path(os.path.join(root, "c-sar.version"))
     version = None
@@ -92,15 +97,13 @@ def c_sar_version(root: str):
             Version(version)
         except InvalidVersion:
             raise ValueError(f"Version '{version}' does not conform to PEP440")
-        if version in v_list:
+        if Version(version) in v_list:
             config_ver = version
     else:
         logging.warning(f"Unable to find 'c-sar.version' in result folder, using latest config")
         version = "?"
-
     if config_ver is None:
         config_ver = str(max(v_list))
-
     return (version, config_ver)
 
 
