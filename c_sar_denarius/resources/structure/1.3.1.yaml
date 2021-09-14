@@ -1,0 +1,247 @@
+QC-sequencing:
+  QC/sequencing:
+    raw_count_qc_summary.tsv:
+      download: true
+      table: true
+      required: false
+      label: "Count QC summary"
+    proportion_mapped_reads_per_sample.png:
+      image: true
+      required: false
+      label: "Mapped reads"
+    percentage_zero_guides_per_sample.png:
+      image: true
+      required: false
+      label: "Guides with no reads"
+    percentage_low_guides_per_sample.png:
+      image: true
+      required: false
+      label: "Guides with low reads"
+    gini_index_per_sample.png:
+      required: false
+    raw_count_matrix.PCA.png:
+      image: true
+      required: false
+      label: "Principal component analysis (PCA)"
+    raw_count_matrix.PCA_scree.png:
+      image: true
+      required: false
+      label: "PCA cumulative variance"
+
+QC-intermediates-corrected:
+  QC/intermediate/corrected:
+    intermediate_summary.corrected.%A%_vs_%B%.tsv:
+      table: true
+      download: true
+      required: false
+      label: "Corrected QC summary"
+    bagel_classification_summary.corrected.%A%_vs_%B%.tsv:
+      table: true
+      download: true
+      required: false
+      label: "Essential/non-essential QC summary"
+    sgrna.count_matrix.correlation.corrected.%A%_vs_%B%.png:
+      image: true
+      required: false
+      label: "sgRNA count correlation"
+    sgrna.count_matrix.density.corrected.%A%_vs_%B%.png:
+      image: true
+      required: false
+      label: "sgRNA count density"
+    sgrna.count_matrix.violin.corrected.%A%_vs_%B%.png:
+      image: true
+      required: false
+      label: "sgRNA count violin"
+    sgrna.count_matrix.PCA.corrected.%A%_vs_%B%.png:
+      image: true
+      required: false
+      label: "sgRNA count PCA"
+    sgrna.count_matrix.PCA_scree.corrected.%A%_vs_%B%.png:
+      image: true
+      required: false
+      label: "sgRNA count PCA scree"
+
+QC-intermediates-normalised:
+  QC/intermediate/normalised:
+    intermediate_summary.normalised.%A%_vs_%B%.tsv:
+      table: true
+      download: true
+      required: false
+      label: "Corrected QC summary"
+    bagel_classification_summary.normalised.%A%_vs_%B%.tsv:
+      table: true
+      download: true
+      required: false
+      label: "Essential/non-essential QC summary"
+    sgrna.count_matrix.correlation.normalised.%A%_vs_%B%.png:
+      image: true
+      required: false
+      label: "sgRNA count correlation"
+    sgrna.count_matrix.density.normalised.%A%_vs_%B%.png:
+      image: true
+      required: false
+      label: "sgRNA count density"
+    sgrna.count_matrix.violin.normalised.%A%_vs_%B%.png:
+      image: true
+      required: false
+      label: "sgRNA count violin"
+    sgrna.count_matrix.PCA.normalised.%A%_vs_%B%.png:
+      image: true
+      required: false
+      label: "sgRNA count PCA"
+    sgrna.count_matrix.PCA_scree.normalised.%A%_vs_%B%.png:
+      image: true
+      required: false
+      label: "sgRNA count PCA scree"
+
+QC-intermediates-raw:
+  QC/intermediate/raw:
+    intermediate_summary.raw.%A%_vs_%B%.tsv:
+      table: true
+      download: true
+      required: false
+      label: "Corrected QC summary"
+    bagel_classification_summary.raw.%A%_vs_%B%.tsv:
+      table: true
+      download: true
+      required: false
+      label: "Essential/non-essential QC summary"
+    sgrna.count_matrix.correlation.raw.%A%_vs_%B%.png:
+      image: true
+      required: false
+      label: "sgRNA count correlation"
+    sgrna.count_matrix.density.raw.%A%_vs_%B%.png:
+      image: true
+      required: false
+      label: "sgRNA count density"
+    sgrna.count_matrix.violin.raw.%A%_vs_%B%.png:
+      image: true
+      required: false
+      label: "sgRNA count violin"
+    sgrna.count_matrix.PCA.raw.%A%_vs_%B%.png:
+      image: true
+      required: false
+      label: "sgRNA count PCA"
+    sgrna.count_matrix.PCA_scree.raw.%A%_vs_%B%.png:
+      image: true
+      required: false
+      label: "sgRNA count PCA scree"
+
+Corrected:
+  corrected/CRISPRcleanR/formatted_inputs:
+    count_matrix.CRISPRcleanR_input.%A%_vs_%B%.coord_filter.tsv:
+      required: false
+    fold_change_matrix.sgrna.CRISPRcleanR_input.%A%_vs_%B%.coord_filter.tsv:
+      required: false
+    library.CRISPRcleanR_input.%A%_vs_%B%.coord_filter.tsv:
+      required: false
+  corrected/CRISPRcleanR/inputs:
+    excluded_guides.tsv:
+      required: false
+    library.coord_filtered.tsv:
+      required: false
+    count_matrix.coord_filtered.tsv:
+      required: false
+  corrected/CRISPRcleanR/output:
+    count_matrix.CRISPRcleanR_corrected.%A%_vs_%B%.corrected.tsv:
+      required: false
+    fold_change_matrix.gene.CRISPRcleanR_corrected.%A%_vs_%B%.corrected.tsv:
+      required: false
+    fold_change_matrix.sgRNA.CRISPRcleanR_corrected.%A%_vs_%B%.corrected.tsv:
+      required: false
+  corrected/%A%_vs_%B%/scaled:
+    fold_change.gene.ROC.LFC.corrected.%A%_vs_%B%.png:
+      image: true
+      required: false
+      label: "ROC - corrected"
+    ROC_summary.LFC.corrected.%A%_vs_%B%.tsv:
+      table: true
+      required: false
+      label: "ROC - summary"
+    fold_change.scaled_depletions_matrix.gene.LFC.corrected.control_vs_plasmid.tsv:
+      required: false
+    fold_change.scaled.gene.LFC.corrected.control_vs_plasmid.tsv:
+      required: false
+
+Duplicates removed:
+  duplicates_removed:
+    duplicate_guides.tsv:
+      required: false
+
+Normalised:
+  normalised/%A%_vs_%B%:
+    count_matrix.lfc.%A%_vs_%B%.normalised.tsv:
+      required: false
+    fold_change_matrix.gene.lfc.%A%_vs_%B%.normalised.tsv:
+      required: false
+    fold_change_matrix.sgrna.lfc.%A%_vs_%B%.normalised.tsv:
+      required: false
+  normalised/%A%_vs_%B%/scaled:
+    fold_change.gene.ROC.LFC.normalised.%A%_vs_%B%.png:
+      image: true
+      required: false
+      label: "ROC - normalised"
+    ROC_summary.LFC.normalised.%A%_vs_%B%.tsv:
+      table: true
+      required: false
+      label: "ROC - summary"
+    fold_change.scaled_depletions_matrix.gene.LFC.normalised.control_vs_plasmid.tsv:
+      required: false
+    fold_change.scaled.gene.LFC.normalised.control_vs_plasmid.tsv:
+      required: false
+
+Raw:
+  raw:
+    count_matrix.tsv:
+      required: false
+    library.processed.tsv:
+      required: false
+  raw/%A%_vs_%B%:
+    count_matrix.lfc.%A%_vs_%B%.raw.tsv:
+      required: false
+    fold_change_matrix.gene.lfc.%A%_vs_%B%.raw.tsv:
+      required: false
+    fold_change_matrix.sgrna.lfc.%A%_vs_%B%.raw.tsv:
+      required: false
+
+Reports:
+  reports:
+    pipeline_report.html:
+      required: false
+    pipeline_timeline.html:
+      required: false
+    pipeline_trace.txt:
+      required: false
+
+BAGEL2:
+  BAGEL2/%A%_vs_%B%:
+    BAGEL.%A%_vs_%B%.gene.bf:
+      required: false
+    BAGEL.%A%_vs_%B%.sgrna.bf:
+      required: false
+  BAGEL2/%A%_vs_%B%/scaled:
+    BF.gene.ROC.BF.%A%_vs_%B%.png:
+      image: true
+      required: false
+      label: "BAGEL2 ROC"
+    ROC_summary.BF.%A%_vs_%B%.tsv:
+      required: false
+    BF.scaled_depletions_matrix.gene.BF.%A%_vs_%B%.tsv:
+      required: false
+    BF.scaled.gene.BF.%A%_vs_%B%.tsv:
+      required: false
+
+MAGeCK:
+  MAGeCK/%A%_vs_%B%:
+    MAGeCK.%A%_vs_%B%.gene_summary.txt:
+      required: false
+    MAGeCK.%A%_vs_%B%.sgrna_summary.txt:
+      required: false
+    mageck_rra_depleted_genes.%A%_vs_%B%.tsv:
+      required: false
+    mageck_rra_enriched_genes.%A%_vs_%B%.tsv:
+      required: false
+    MAGeCK_gene_volcano.%A%_vs_%B%.png:
+      required: false
+      image: true
+      label: "MAGeCK - gene volcano"

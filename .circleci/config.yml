@@ -18,8 +18,9 @@ jobs:
       - checkout
       - run:
           name: Execute skywalking-eyes check of licenses
+          # once 0.2.0 released change image
           command: |
-            docker run --rm -v $(pwd):/github/workspace apache/skywalking-eyes header check
+            docker run --rm -v $(pwd):/github/workspace ghcr.io/apache/skywalking-eyes/license-eye header check
   build_docker:
     environment:
       IMAGE_NAME: quay.io/wtsicgp/c-sar-denarius
@@ -40,8 +41,9 @@ jobs:
             docker run -t --rm $IMAGE_NAME:$CLEAN_BRANCH c-sar-denarius --version
 
             mkdir -p test-results/pytest/
-            container_id=$(docker run -d --rm $IMAGE_NAME:$CLEAN_BRANCH c-sar-denarius sleep 1000)
-            docker cp $container_id:/var/www/c_sar_denarius/junit.xml  test-results/pytest/junit.xml
+            container_id=$(docker run -d --rm $IMAGE_NAME:$CLEAN_BRANCH sleep 1000)
+            docker cp $container_id:/var/www/c_sar_denarius/junit.xml test-results/pytest/junit.xml
+            docker cp $container_id:/var/www/c_sar_denarius/test-coverage/ htmlcov/
             docker rm -f $container_id
 
             if [ "$CIRCLE_TAG" = "$BRANCH_OR_TAG" ]; then
@@ -52,19 +54,8 @@ jobs:
             fi
       - store_test_results:
           path: test-results
-
-  test_pypi_publish:
-    docker:
-      - image: circleci/python:3.7
-    steps:
-      - checkout  # checkout source code to working directory
-      - run:
-          command: |  # create whl, install twine and publish to Test PyPI
-            set -e
-            python setup.py sdist
-            sudo pip install pipenv
-            pipenv install twine
-            pipenv run twine check --strict dist/*
+      - store_artifacts:
+          path: htmlcov
 
   pypi_publish:
     docker:
@@ -73,16 +64,27 @@ jobs:
       - checkout  # checkout source code to working directory
       - run:
           command: |  # create whl, install twine and publish to PyPI
+            BRANCH_OR_TAG="${CIRCLE_TAG:-$CIRCLE_BRANCH}"
+            pip install cython
             python setup.py sdist
             sudo pip install pipenv
             pipenv install twine
-            pipenv run twine upload dist/*
+            pipenv run twine check --strict dist/*
+            if [ "$CIRCLE_TAG" = "$BRANCH_OR_TAG" ]; then
+              echo 'Pushing to PyPi'
+              pipenv run twine upload dist/*
+            else
+              echo "I am not a tag so not pushing to PyPi"
+            fi
 
 workflows:
   version: 2.1
   build_test_publish:
     jobs:
-      - license_chk
+      - license_chk:
+          filters:
+            tags:
+              only: /.+/
       - build_docker:
           context:
             - dockerhub-casmservice
@@ -92,23 +94,12 @@ workflows:
           filters:
             tags:
               only: /.+/
-      - test_pypi_publish:
-          context:
-            - pypi-twine-uploads
-          requires:
-            - license_chk
-          filters:
-            tags:
-              only: /.+/
       - pypi_publish:
           requires:
             - license_chk
             - build_docker
-            - test_pypi_publish
           context:
             - pypi-twine-uploads
           filters:
-            branches:
-              ignore: /.*/
             tags:
               only: /.+/

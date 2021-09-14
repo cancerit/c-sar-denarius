@@ -31,7 +31,6 @@ RUN apt-get -yq update \
     python3.9-distutils \
     python3.9-venv \
     curl \
-    git \
 && curl -sSL --retry 10 https://bootstrap.pypa.io/get-pip.py > get-pip.py \
 && python3.9 get-pip.py
 
@@ -48,7 +47,7 @@ COPY .coveragerc .
 # hadolint ignore=DL3013
 RUN pip install --no-cache-dir -r tests/requirements-test.txt \
 && python3.9 ./setup.py develop \
-&& pip install --no-cache-dir sauth@git+git://github.com/elfgoh/sauth.git@15dbca865332e7b83ccf5d9d227d0321a88132ca \
+&& pip install --no-cache-dir https://github.com/elfgoh/sauth/archive/15dbca865332e7b83ccf5d9d227d0321a88132ca.tar.gz \
 && tests/scripts/run_unit_tests.sh
 
 # generate the coverage report (and junit.xml) in for info and later use

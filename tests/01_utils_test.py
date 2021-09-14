@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2021
+# Copyright (c) 2021 Genome Research Ltd
 #
 # Author: CASM/Cancer IT <cgphelp@sanger.ac.uk>
 #
@@ -38,14 +38,16 @@ DATA_DIR = os.path.join(
     "data/version_chks",
 )
 
+max_ver = str(max(csdutils.template_versions()))
+
 
 @pytest.mark.parametrize(
     "v_set, exp_err, exp_result",
     [
         ("good", False, ("1.2.0", "1.2.0")),
-        ("good-extended", False, ("1.2.0a2", "1.2.0")),
+        ("good-extended", False, ("1.2.0a2", max_ver)),
         ("bad", True, None),
-        ("absent", False, ("?", "1.2.0")),
+        ("absent", False, ("?", max_ver)),
     ],
 )
 def test_01_versions(v_set, exp_err, exp_result):

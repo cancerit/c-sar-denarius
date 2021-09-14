@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2021
+# Copyright (c) 2021 Genome Research Ltd
 #
 # Author: CASM/Cancer IT <cgphelp@sanger.ac.uk>
 #
@@ -40,4 +40,4 @@ import c_sar_denarius.markdown as csdmd
     ],
 )
 def test_01_versions(version, config_ver):
-    assert isinstance(csdmd.structure_yaml(version, config_ver), dict)
+    assert isinstance(csdmd.structure_yaml(version, config_ver, None), dict)

@@ -1,5 +1,5 @@
 # CHANGES
 
-## NEXT
+## 1.0.0
 
-- New
+- Fist public release

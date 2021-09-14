@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 #
-# Copyright (C) 2021
+# Copyright (c) 2021 Genome Research Ltd
 #
 # Author: CASM/Cancer IT <cgphelp@sanger.ac.uk>
 #
@@ -38,7 +38,7 @@ config = {
     "author": "Keiran M Raine",
     "url": "https://github.com/cancerit/c-sar-denarius",
     "author_email": "cgphelp@sanger.ac.uk",
-    "version": "0.0.0",
+    "version": "1.0.0",
     "license": "AGPL-3.0",
     "python_requires": ">= 3.9",
     "install_requires": [
