@@ -1,0 +1,15 @@
+.md-typeset .mdx-switch button > code {
+    background-color: var(--md-primary-fg-color);
+    color: var(--md-primary-bg-color);
+    display: block;
+}
+
+hr { height:1px; border:none; color:var(--md-primary-fg-color); background-color:var(--md-primary-fg-color); }
+
+.md-typeset h2 {
+    margin: .64em 0 .64em;
+}
+
+.md-typeset h3 {
+    font-weight: 300;
+}

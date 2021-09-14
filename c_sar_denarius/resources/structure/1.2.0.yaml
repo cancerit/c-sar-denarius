@@ -1,0 +1,217 @@
+QC-sequencing:
+  QC/sequencing:
+    raw_count_qc_summary.tsv:
+      download: true
+      table: true
+      required: false
+      label: "Count QC summary"
+
+QC-intermediates-corrected:
+  QC/intermediate/corrected:
+    NNMD_and_Glass_Delta.corrected.%A%_vs_%B%.tsv:
+      table: true
+      required: false
+      label: "NNMD and Glass Delta - corrected"
+    counts_correlation.corrected.%A%_vs_%B%.png:
+      required: false
+    counts_density.%S%.corrected.%A%_vs_%B%.png:
+      required: false
+      wildcard: true
+    counts_violin.corrected.%A%_vs_%B%.png:
+      required: false
+    gene_lfc_density.LFC.corrected.%A%_vs_%B%.png:
+      image: true
+      required: false
+      label: "Gene LCF density - corrected"
+    gene_lfc_violin.corrected.%A%_vs_%B%.png:
+      image: true
+      required: false
+      label: "Gene LFC violin - corrected"
+    sgrna_lfc_density.%S%.corrected.%A%_vs_%B%.png:
+      required: false
+      wildcard: true
+    sgrna_lfc_density.LFC.corrected.%A%_vs_%B%.png:
+      required: false
+    sgrna_lfc_violin.corrected.%A%_vs_%B%.png:
+      required: false
+
+QC-intermediates-normalised:
+  QC/intermediate/normalised:
+    NNMD_and_Glass_Delta.normalised.%A%_vs_%B%.tsv:
+      table: true
+      required: false
+      label: "NNMD and Glass Delta - normalised"
+    counts_correlation.normalised.%A%_vs_%B%.png:
+      required: false
+    counts_density.%S%.normalised.%A%_vs_%B%.png:
+      required: false
+      wildcard: true
+    counts_violin.normalised.%A%_vs_%B%.png:
+      required: false
+    gene_lfc_correlation.normalised.%A%_vs_%B%.png:
+      image: true
+      required: false
+      label: "Gene LFC correlation - normalised"
+    gene_lfc_density.%S%.normalised.%A%_vs_%B%.png:
+      image: true
+      required: false
+      label: "Gene LFC density - normalised"
+      wildcard: true
+    gene_lfc_violin.normalised.%A%_vs_%B%.png:
+      image: true
+      required: false
+      label: "Gene LFC violin - normalised"
+    sgrna_lfc_correlation.normalised.%A%_vs_%B%.png:
+      required: false
+    sgrna_lfc_density.%S%.normalised.%A%_vs_%B%.png:
+      required: false
+      wildcard: true
+    sgrna_lfc_violin.normalised.%A%_vs_%B%.png:
+      required: false
+
+QC-intermediates-raw:
+  QC/intermediate/raw:
+    NNMD_and_Glass_Delta.raw.%A%_vs_%B%.tsv:
+      table: true
+      required: false
+      label: "NNMD and Glass Delta - raw"
+    counts_correlation.raw.%A%_vs_%B%.png:
+      required: false
+    counts_density.%S%.raw.%A%_vs_%B%.png:
+      required: false
+      wildcard: true
+    counts_violin.raw.%A%_vs_%B%.png:
+      required: false
+    gene_lfc_correlation.raw.%A%_vs_%B%.png:
+      image: true
+      required: false
+      label: "Gene LFC correlation - raw"
+    gene_lfc_density.%S%.raw.%A%_vs_%B%.png:
+      image: true
+      required: false
+      label: "Gene LFC density - raw"
+      wildcard: true
+    gene_lfc_violin.raw.%A%_vs_%B%.png:
+      image: true
+      required: false
+      label: "Gene LFC violin - raw"
+    sgrna_lfc_correlation.raw.%A%_vs_%B%.png:
+      required: false
+    sgrna_lfc_density.%S%.raw.%A%_vs_%B%.png:
+      required: false
+      wildcard: true
+    sgrna_lfc_violin.raw.%A%_vs_%B%.png:
+      required: false
+
+Corrected:
+  corrected/CRISPRcleanR/formatted_inputs:
+    count_matrix.CRISPRcleanR_input.%A%_vs_%B%.coord_filter.tsv:
+      required: false
+    fold_change_matrix.sgrna.CRISPRcleanR_input.%A%_vs_%B%.coord_filter.tsv:
+      required: false
+    library.CRISPRcleanR_input.tsv:
+      required: false
+  corrected/CRISPRcleanR/inputs:
+    excluded_guides.tsv:
+      required: false
+    library.coord_filtered.tsv:
+      required: false
+  corrected/CRISPRcleanR/output:
+    count_matrix.CRISPRcleanR_corrected.%A%_vs_%B%.corrected.tsv:
+      required: false
+    fold_change_matrix.gene.CRISPRcleanR_corrected.%A%_vs_%B%.corrected.tsv:
+      required: false
+    fold_change_matrix.sgRNA.CRISPRcleanR_corrected.%A%_vs_%B%.corrected.tsv:
+      required: false
+  corrected/%A%_vs_%B%/scaled:
+    ROC.LFC.corrected.%A%_vs_%B%.png:
+      image: true
+      required: false
+      label: "ROC - corrected"
+    ROC_summary.LFC.corrected.%A%_vs_%B%.tsv:
+      table: true
+      required: false
+      label: "ROC - summary"
+    scaled_depletions_matrix.LFC.corrected.%A%_vs_%B%.tsv:
+      required: false
+    scaled.gene.LFC.corrected.%A%_vs_%B%.tsv:
+      required: false
+
+Duplicates removed:
+  duplicates_removed:
+    duplicate_guides.tsv:
+      required: false
+
+Normalised:
+  normalised/%A%_vs_%B%:
+    fold_change_matrix.gene.lfc.%A%_vs_%B%.normalised.tsv:
+      required: false
+    fold_change_matrix.sgrna.lfc.%A%_vs_%B%.normalised.tsv:
+      required: false
+  normalised/%A%_vs_%B%/scaled:
+    ROC.LFC.normalised.%A%_vs_%B%.png:
+      required: false
+    ROC_summary.LFC.normalised.%A%_vs_%B%.tsv:
+      table: true
+      label: "ROC - summary"
+      required: false
+    scaled_depletions_matrix.LFC.normalised.%A%_vs_%B%.tsv:
+      required: false
+    scaled.gene.LFC.normalised.%A%_vs_%B%.tsv:
+      required: false
+
+Raw:
+  raw:
+    count_matrix.tsv:
+      required: false
+  raw/%A%_vs_%B%:
+    count_matrix.lfc.%A%_vs_%B%.raw.tsv:
+      required: false
+    fold_change_matrix.gene.lfc.%A%_vs_%B%.raw.tsv:
+      required: false
+    fold_change_matrix.sgrna.lfc.%A%_vs_%B%.raw.tsv:
+      required: false
+
+Reports:
+  reports:
+    pipeline_report.html:
+      required: false
+    pipeline_timeline.html:
+      required: false
+    pipeline_trace.txt:
+      required: false
+
+BAGEL2:
+  BAGEL2/%A%_vs_%B%:
+    BAGEL.%A%_vs_%B%.gene.bf:
+      required: false
+    BAGEL.%A%_vs_%B%.sgrna.bf:
+      required: false
+  BAGEL2/%A%_vs_%B%/scaled:
+    ROC.BF.%A%_vs_%B%.png:
+      image: true
+      required: false
+      label: "BAGEL2 ROC"
+    ROC_summary.BF.%A%_vs_%B%.tsv:
+      required: false
+    scaled_depletions_matrix.BF.%A%_vs_%B%.tsv:
+      required: false
+    scaled.gene.BF.%A%_vs_%B%.tsv:
+      required: false
+
+MAGeCK:
+  MAGeCK/%A%_vs_%B%:
+    MAGeCK.%A%_vs_%B%.gene_summary.txt:
+      required: false
+    MAGeCK.%A%_vs_%B%.sgrna_summary.txt:
+      required: false
+    MAGeCK_gene_hits_binary.%A%_vs_%B%.tsv:
+      required: false
+    MAGeCK_gene_hits_summary.%A%_vs_%B%.tsv:
+      required: false
+    MAGeCK_gene_volcano.%A%_vs_%B%.png:
+      required: false
+      image: true
+      label: "MAGeCK - gene volcano"
+    MAGeCK_sgrna_barplots.%A%_vs_%B%.pdf:
+      required: false

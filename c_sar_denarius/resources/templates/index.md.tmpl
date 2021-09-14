@@ -1,0 +1,62 @@
+# c-sar-denarius
+
+<!--
+Be careful, if you update the indent needs to be corrected to 4 spaces
+-->
+
+See left doc tree for available datasets.
+
+- [Glossary of terms](#glossary-of-terms)
+    - [Count QC summary](#count-qc-summary)
+    - [NNMD and Glass Delta](#nnmd-and-glass-delta)
+- [Site color](#site-color)
+
+----
+
+## Glossary of terms
+
+Many of the terms are repeated in the various data levels (raw, normalized…) but only the high level definitions are included here.
+
+### Count QC summary
+
+| Name         | Description                                                                      |
+|--------------|----------------------------------------------------------------------------------|
+| total_sgrnas | Total number of guides in the library.                                           |
+| mapped_reads | Number of reads sequenced successfully mapped.                                   |
+| zero_sgrnas  | Number of guides in library with zero counts mapped                              |
+| low_sgrnas   | Number of guides in the library with a low number of reads (<30) mapped to them. |
+| gini_index   | A measure of the evenness sgRNA count density.                                   |
+
+### NNMD and Glass Delta
+
+| Name                           | Description                                                                                                                                                                                                                                                                                                                                                                                        |
+|--------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Glass Delta                    | Glass Delta is a measure of the separation between the essential and non-essential genes. It is an indicator of screen quality. Defined as the absolute difference in means between the reference sets of essential and non-essential genes, divided by the standard deviation of the essential genes. The larger the value the better the screen.                                                 |
+| NNMD                           | The null-normalized mean difference (NNMD) is a measure of separation, defined as the difference between the mean dependency scores of the common essential genes and non-essential genes divided by the standard deviation of the dependency scores of the non-essential genes. The lower the value the better the separation of dependency scores for between essential and non-essential genes. |
+| Gene LFC correlation           | Pearson correlation between replicates using the gene level log fold changes.                                                                                                                                                                                                                                                                                                                      |
+| Gene LFC density               | Plot of the distribution of gene level log fold changes. The distribution is estimated using kernel density estimation. Distributions of genes for prior known essential and non-essential genes are estimated and plotted separately with the remaining genes plotted in the ‘undefined’ category.                                                                                                |
+| Gene LFC violin                | Distribution of gene level log fold changes plotted using a violin plot. The boxplot showing the interquartile range and the horizontal line the median log fold changes.                                                                                                                                                                                                                          |
+| Receiver operating curve (ROC) | Using the reference prior known essential and non-essential gene sets. Statistics are generated on the performance of the screen to correctly classify essential and non-essential genes.                                                                                                                                                                                                          |
+
+Thresholds:
+
+- Maximum log fold change with an FDR less than 5%.
+- Specificity: The proportion of False Positives (priori known non essentials) correctly identified as such at the 5% FDR threshold.
+- Sensitivity: The proportion of True Positives (priori known essentials) correctly identified as such at the 5% FDR threshold.
+
+----
+
+## Site color
+
+You can choose the primary color for the site during the generation, this section allows you to try different colors rapidly.
+These will not persist into the rest of the site and are only to aid you selecting `--primary-color`.
+
+<p><em>Click on a tile to change the primary color</em>:</p> <div class=mdx-switch> <button data-md-color-primary=red><code>red</code></button> <button data-md-color-primary=pink><code>pink</code></button> <button data-md-color-primary=purple><code>purple</code></button> <button data-md-color-primary=deep-purple><code>deep purple</code></button> <button data-md-color-primary=indigo><code>indigo</code></button> <button data-md-color-primary=blue><code>blue</code></button> <button data-md-color-primary=light-blue><code>light blue</code></button> <button data-md-color-primary=cyan><code>cyan</code></button> <button data-md-color-primary=teal><code>teal</code></button> <button data-md-color-primary=green><code>green</code></button> <button data-md-color-primary=light-green><code>light green</code></button> <button data-md-color-primary=lime><code>lime</code></button> <button data-md-color-primary=yellow><code>yellow</code></button> <button data-md-color-primary=amber><code>amber</code></button> <button data-md-color-primary=orange><code>orange</code></button> <button data-md-color-primary=deep-orange><code>deep orange</code></button> <button data-md-color-primary=brown><code>brown</code></button> <button data-md-color-primary=grey><code>grey</code></button> <button data-md-color-primary=blue-grey><code>blue grey</code></button> <button data-md-color-primary=black><code>black</code></button> <button data-md-color-primary=white><code>white</code></button> </div> <script>
+  var buttons = document.querySelectorAll("button[data-md-color-primary]")
+  buttons.forEach(function(button) {
+    button.addEventListener("click", function() {
+      var attr = this.getAttribute("data-md-color-primary")
+      document.body.setAttribute("data-md-color-primary", attr)
+    })
+  })
+</script>
