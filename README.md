@@ -116,17 +116,22 @@ Please use [skywalking-eyes](https://github.com/apache/skywalking-eyes).
 
 Expected workflow:
 
+```bash
+# recent build, change to apache/skywalking-eyes:0.2.0 once released
+export DOCKER_IMG=ghcr.io/apache/skywalking-eyes/license-eye
+```
+
 1. Check state before modifying `.licenserc.yaml`:
-   - `docker run -it --rm -v $(pwd):/github/workspace apache/skywalking-eyes header check`
+   - `docker run -it --rm -v $(pwd):/github/workspace $DOCKER_IMG header check`
    - You should get some 'valid' here, those without a header as 'invalid'
 1. Modify `.licenserc.yaml`
 1. Apply the changes:
-   - `docker run -it --rm -v $(pwd):/github/workspace apache/skywalking-eyes header fix`
+   - `docker run -it --rm -v $(pwd):/github/workspace $DOCKER_IMG header fix`
 1. Add/commit changes
 
-This is executed in the CI pipeline.
+The check is executed in the CI pipeline which will fail if expected files are missing the license.
 
-*DO NOT* edit the header in the files, please modify the date component of `content` in `.licenserc.yaml`.  The only exception being:
+*DO NOT* edit the header in the files, please modify the date component of `content` in `.licenserc.yaml`.  The only files needing manual update being:
 
 - `README.md`
 
