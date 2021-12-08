@@ -35,7 +35,7 @@ QC-intermediates-corrected:
       download: true
       required: false
       label: "Corrected QC summary"
-    bagel_classification_summary.corrected.%A%_vs_%B%.tsv:
+    bagel_classification_summary.%A%_vs_%B%.fc.tsv:
       table: true
       download: true
       required: false
@@ -68,7 +68,7 @@ QC-intermediates-normalised:
       download: true
       required: false
       label: "Corrected QC summary"
-    bagel_classification_summary.normalised.%A%_vs_%B%.tsv:
+    bagel_classification_summary.%A%_vs_%B%.fc.tsv:
       table: true
       download: true
       required: false
@@ -101,7 +101,7 @@ QC-intermediates-raw:
       download: true
       required: false
       label: "Corrected QC summary"
-    bagel_classification_summary.raw.%A%_vs_%B%.tsv:
+    bagel_classification_summary.%A%_vs_%B%.fc.tsv:
       table: true
       download: true
       required: false
